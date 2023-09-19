@@ -1,0 +1,5 @@
+training:
+  - group: Universal Logout API Reference
+    expanded: true
+    pages:
+      - page: openapi/reference.page.yaml/*

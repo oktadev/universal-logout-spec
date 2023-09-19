@@ -1,0 +1,245 @@
+openapi: 3.1.0
+info:
+  title: Universal Logout API
+  termsOfService: https://developer.okta.com/terms/
+  contact:
+    name: Okta Developer Team
+    url: https://developer.okta.com/
+    email: devex-public@okta.com
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 2.7.0
+  x-logo:
+    url: logo.svg
+    backgroundColor: transparent
+    altText: Okta Logo
+externalDocs:
+  description: Find more info here
+  url: https://developer.okta.com/docs/api/getting_started/design_principles.html
+servers:
+  - url: https://saas.com
+paths:
+  /.well-known/universal-logout:
+    get:
+      summary: Retrieve the Universal Logout configuration metadata
+      description: Returns the supported universal logout configuration for the host.
+      operationId: getUniversalLogoutConfiguration
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UniversalLogoutMetadata'
+              examples:
+                OpenID Connect Metadata:
+                  $ref: '#/components/examples/UniversalLogoutMetadataExample'
+      tags:
+        - UniversalLogout
+  /universal-logout:
+    post:
+      summary: Logout a User
+      description: |-
+        Logout a user based on a [subject identifier](https://datatracker.ietf.org/doc/html/draft-ietf-secevent-subject-identifiers-14).
+      operationId: logoutUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+            examples:
+              email:
+                $ref: '#/components/examples/LogoutUserByEmail'
+              phone:
+                Email Logout:
+                $ref: '#/components/examples/LogoutUserByPhone'
+        required: true
+      responses:
+        '204':
+          description: Success
+        '403':
+          description: Access Denied
+        '404':
+          description: User not found
+      security:
+        - oauth2:
+            - universal-logout
+      tags:
+        - UniversalLogout
+components:
+  schemas:
+    UniversalLogoutMetadata:
+      type: object
+      properties:
+        universal_logout_endpoint:
+          description: Universal logout endpoint url
+          type: string
+        authorizationSchemes:
+          description: Authorization credentials accepted at the universal logout endpoint
+          type: array
+          items:
+            type: string
+        issuers:
+          description: Issuers that can authorize universal logout credentials
+          type: array
+          items:
+            type: string
+        scope:
+          description: OAuth 2.0 scopes required for accessing the universal logout endpoint
+          type: string
+    LogoutRequest:
+      type: object
+      properties:
+        subject:
+          oneOf:
+            - '#/components/schemas/AccountSubject'
+            - '#/components/schemas/EmailSubject'
+            - '#/components/schemas/IssuerSubSubject'
+            - '#/components/schemas/OpaqueSubject'
+            - '#/components/schemas/PhoneSubject'
+            - '#/components/schemas/DidSubject'
+            - '#/components/schemas/UriSubject'
+            - '#/components/schemas/AliasSubject'
+          discriminator:
+            propertyName: format
+    AccountSubject:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/SubjectFormat'
+        uri:
+          type: string
+      required:
+        - format
+        - uri
+    EmailSubject:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/SubjectFormat'
+        email:
+          type: string
+      required:
+        - format
+        - email
+    IssuerSubSubject:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/SubjectFormat'
+        iss:
+          type: string
+        sub:
+          type: string
+      required:
+        - format
+        - iss
+        - sub
+    OpaqueSubject:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/SubjectFormat'
+        id:
+          type: string
+      required:
+        - format
+        - id
+    PhoneSubject:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/SubjectFormat'
+        phone_number:
+          type: string
+      required:
+        - format
+        - phone_number
+    DidSubject:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/SubjectFormat'
+        url:
+          type: string
+      required:
+        - format
+        - url
+    UriSubject:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/SubjectFormat'
+        uri:
+          type: string
+      required:
+        - format
+        - uri
+    AliasSubject:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/SubjectFormat'
+        identifiers:
+          type: array
+          items:
+            oneOf:
+              - '#/components/schemas/AccountSubject'
+              - '#/components/schemas/EmailSubject'
+              - '#/components/schemas/IssuerSubSubject'
+              - '#/components/schemas/OpaqueSubject'
+              - '#/components/schemas/PhoneSubject'
+              - '#/components/schemas/DidSubject'
+              - '#/components/schemas/UriSubject'
+      required:
+        - format
+        - uri
+    SubjectFormat:
+      type: string
+      enum:
+        - account
+        - email
+        - iss_sub
+        - opaque
+        - phone_number
+        - did
+        - uri
+        - aliases
+  examples:
+    UniversalLogoutMetadataExample:
+      value:
+        universal_logout_endpoint: https://saas.com/universal-logout
+        authorizationSchemes:
+          - Bearer
+        issuers:
+          - https:/idp.example.com
+        scope: universal-logout
+    LogoutUserByEmail:
+      summary: Logout a user by their email address
+      value:
+        subject:
+          format: email
+          email: user@example.com
+    LogoutUserByPhone:
+      summary: Logout a user by their phone number
+      value:
+        subject:
+          format: phone_number
+          phone_number: '+12065550100'
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: 'Pass the access_token as the value of the Authorization header: `Authorization: Bearer {access_token}`'
+      flows:
+        authorizationCode:
+          x-usePkce:
+            disableManualConfiguration: false
+            hideClientSecretInput: true
+          authorizationUrl: /oauth2/v1/authorize
+          tokenUrl: /oauth2/v1/token
+          scopes:
+            universal-logout: Requests access logout invdividual users
+tags:
+  - name: UniversalLogout
+    x-displayName: Universal Logout
