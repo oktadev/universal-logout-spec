@@ -1,6 +1,12 @@
 type: reference-docs
 definitionId: okta-universal-logout
 settings:
+  hideInfoSection: true
+  pagination: section
+  hideTryItPanel: true
+  hideSecuritySection: true
+  schemaExpansionLevel: 2
+  jsonSampleExpandLevel: 3
   generateCodeSamples:
     languages:
       - lang: curl

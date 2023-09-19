@@ -93,14 +93,14 @@ components:
       properties:
         subject:
           oneOf:
-            - '#/components/schemas/AccountSubject'
-            - '#/components/schemas/EmailSubject'
-            - '#/components/schemas/IssuerSubSubject'
-            - '#/components/schemas/OpaqueSubject'
-            - '#/components/schemas/PhoneSubject'
-            - '#/components/schemas/DidSubject'
-            - '#/components/schemas/UriSubject'
-            - '#/components/schemas/AliasSubject'
+            - $ref: '#/components/schemas/AccountSubject'
+            - $ref: '#/components/schemas/EmailSubject'
+            - $ref: '#/components/schemas/IssuerSubSubject'
+            - $ref: '#/components/schemas/OpaqueSubject'
+            - $ref: '#/components/schemas/PhoneSubject'
+            - $ref: '#/components/schemas/DidSubject'
+            - $ref: '#/components/schemas/UriSubject'
+            - $ref: '#/components/schemas/AliasSubject'
           discriminator:
             propertyName: format
     AccountSubject:
@@ -185,13 +185,13 @@ components:
           type: array
           items:
             oneOf:
-              - '#/components/schemas/AccountSubject'
-              - '#/components/schemas/EmailSubject'
-              - '#/components/schemas/IssuerSubSubject'
-              - '#/components/schemas/OpaqueSubject'
-              - '#/components/schemas/PhoneSubject'
-              - '#/components/schemas/DidSubject'
-              - '#/components/schemas/UriSubject'
+              - $ref: '#/components/schemas/AccountSubject'
+              - $ref: '#/components/schemas/EmailSubject'
+              - $ref: '#/components/schemas/IssuerSubSubject'
+              - $ref: '#/components/schemas/OpaqueSubject'
+              - $ref: '#/components/schemas/PhoneSubject'
+              - $ref: '#/components/schemas/DidSubject'
+              - $ref: '#/components/schemas/UriSubject'
       required:
         - format
         - uri

@@ -1,10 +1,13 @@
 import { lighten, darken, readableColor } from 'polished';
+import * as Tokens from "@okta/odyssey-design-tokens";
+
+const fontFamily = 'ABC Whyte,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif';
 
 export const theme = {
   // spacing: {
-  //   unit: 5,
-  //   sectionHorizontal: ({ spacing }) => spacing.unit * 8,
-  //   sectionVertical: ({ spacing }) => spacing.unit * 8,
+    // unit: Tokens.SpaceScale1,
+    // sectionHorizontal: ({ spacing }) => Tokens.SpaceScale4,
+    // sectionVertical: ({ spacing }) => Tokens.SpaceScale4,
   // },
   // breakpoints: {
   //   xs: 0,
@@ -15,7 +18,9 @@ export const theme = {
   colors: {
     // tonalOffset: 0.2,
     primary: {
-      main: '#00297A',
+      main: Tokens.ColorPaletteBlue500,
+      light: Tokens.ColorPaletteBlue300,
+      dark: Tokens.ColorPaletteBlue900,
       // light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
       // dark: ({ colors }) => darken(colors.tonalOffset, colors.primary.main),
       // contrastText: ({ colors }) => readableColor(colors.primary.main),
@@ -45,13 +50,13 @@ export const theme = {
     //   contrastText: ({ colors }) => readableColor(colors.info.main),
     // },
     text: {
-      primary: '#1d1d21',
-      // secondary: '#4e566d',
+      primary: Tokens.ColorTextBody,
+      secondary: Tokens.ColorTextSub
     },
-    // border: {
-    //   dark: 'rgba(0,0,0, 0.15)',
-    //   light: '#ffffff',
-    // },
+    border: {
+      dark: Tokens.ColorBorderPrimaryDark,
+      light: '#fff',
+    },
     // responses: {
     //   success: {
     //     color: ({ colors }) => colors.success.main,
@@ -71,86 +76,100 @@ export const theme = {
     //   },
     // },
     http: {
-      get: '#6bbd5b',
-      post: '#248fb2',
-      put: '#9b708b',
+      get: Tokens.ColorPaletteGreen500,
+      post: Tokens.ColorPaletteTurquoise500,
+      put: Tokens.ColorPalettePurple500,
       options: '#d3ca12',
-      patch: '#e09d43',
-      delete: '#e27a7a',
+      patch: Tokens.ColorPaletteTurquoise500,
+      delete: Tokens.ColorPaletteRed500,
       basic: '#999',
       link: '#31bbb6',
       head: '#c167e4',
     },
-    // navbar: {
-    //   main: ({ colors }) => colors.primary.main,
-    //   gradient: ({ colors }) => darken(colors.tonalOffset / 2, colors.navbar.main),
-    //   contrastText: 'white'
-    // },
-    // footer: {
-      // main: ({ colors }) => colors.primary.main,
-      // contrastText: 'white'
-    // },
+    navbar: {
+      main: Tokens.ColorPaletteBlue900,
+      gradient: Tokens.ColorPaletteBlue900,
+      contrastText: Tokens.ColorTextBodyInverse,
+      activeBgColor: Tokens.ColorBackgroundPrimaryLight,
+      fontSize: Tokens.FontSizeBody
+    },
+    footer: {
+      main: Tokens.ColorPaletteBlue900,
+      contrastText: Tokens.ColorTextBodyInverse
+    },
   },
-
   sidebar: {
-    backgroundColor: '#F5F5F6',
-    width: '260px',
+    backgroundColor: Tokens.ColorPaletteNeutral000,
+    activeBgColor: Tokens.ColorPaletteNeutral000,
+    rightLineColor: Tokens.ColorPaletteNeutral000,
+    separatorLabelColor: '#000'
   },
   // tocPanel: {
   //   width: '240px',
   // },
-
   typography: {
-    fontSize: '16px',
-    lineHeight: '1.5em',
-    fontWeightRegular: '400',
-    fontWeightBold: '600',
+    fontSize: Tokens.FontSizeBody,
+    lineHeight: 1.6, // Tokens.FontLineHeightUi is too compact
+    fontWeightRegular: Tokens.FontWeightNormal,
+    fontWeightBold: Tokens.FontWeightBold,
     fontWeightLight: '300',
-    fontFamily: '"Source Sans Pro", sans-serif',
+    fontFamily: fontFamily,
     headings: {
-      fontFamily: '"Source Sans Pro", sans-serif',
-      fontWeight: '600',
+      fontWeight: Tokens.FontWeightNormal,
+      color: Tokens.ColorTextHeading,
+      fontFamily: fontFamily,
     },
-    // heading1: {
-    //   fontSize: '1.85714em',
-    //   fontWeight: '600',
-    //   fontFamily: ({ typography }) => typography.headings.fontFamily,
-    //   lineHeight: ({ typography }) => typography.lineHeight,
-    //   color: ({ colors }) => colors.primary.main,
-    //   capitalize: true,
-    // },
-    // heading2: {
-    //   fontSize: '1.57143em',
+    heading1: {
+      fontSize: Tokens.FontSizeHeading1,
+      lineHeight: Tokens.FontLineHeightHeading1,
+      color: Tokens.ColorPaletteNeutral900,
+      marginTop:  '0px',
+      marginBottom: '18px'
+      // fontWeight: '600',
+      // fontFamily: ({ typography }) => typography.headings.fontFamily,
+      // lineHeight: ({ typography }) => typography.lineHeight,
+      // color: ({ colors }) => colors.primary.main,
+      // capitalize: true,
+    },
+    // NOTE: bumping heading hierarchy down one since 1 and 2 are too similar
+    heading2: {
+      fontSize: Tokens.FontSizeHeading3,
+      lineHeight: Tokens.FontLineHeightHeading3,
+      marginBottom: '18px'
     //   fontWeight: '600',
     //   color: ({ colors }) => colors.text.primary,
     //   fontFamily: ({ typography }) => typography.headings.fontFamily,
     //   lineHeight: ({ typography }) => typography.lineHeight,
     //   capitalize: false,
-    // },
-    // heading3: {
-    //   fontSize: '1.27em',
-    //   fontWeight: '600',
+    },
+    heading3: {
+      fontSize: Tokens.FontSizeHeading4,
+      lineHeight: Tokens.FontLineHeightHeading4,
+      marginBottom: '18px'
     //   color: ({ colors }) => colors.text.primary,
     //   fontFamily: ({ typography }) => typography.headings.fontFamily,
     //   lineHeight: ({ typography }) => typography.lineHeight,
     //   capitalize: false,
-    // },
-    // heading4: {
-    // // ...
-    // },
-    // heading5: {
-    // // ...
-    // },
-    // heading6: {
-    // // ...
-    // },
+    },
+    heading4: {
+      fontSize: Tokens.FontSizeHeading5,
+      lineHeight: Tokens.FontLineHeightHeading5,
+      marginBottom: '18px'
+    },
+    heading5: {
+      fontSize: Tokens.FontSizeHeading5,
+      lineHeight: Tokens.FontLineHeightHeading5,
+      marginBottom: '18px'
+    },
+    heading6: {
+      fontSize: Tokens.FontSizeHeading5,
+      lineHeight: Tokens.FontLineHeightHeading5,
+      marginBottom: '18px'
+    },
     code: {
-      fontSize: '13px',
-      fontFamily: '"Source Code Pro", sans-serif',
       // fontWeight: ({ typography }) => typography.fontWeightRegular,
-      color: '#e53935',
-      backgroundColor: 'rgba(38, 50, 56, 0.04)',
-      wrap: false,
+      color: Tokens.ColorTextBody,
+      backgroundColor: Tokens.ColorPaletteNeutral100
     },
     links: {
       color: ({ colors }) => colors.primary.main,
