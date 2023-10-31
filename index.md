@@ -82,7 +82,7 @@ If the logout request succeeded, your application returns HTTP `204`.
 * `204 No Content` - A `204` response indicates a successful request, and that the user will be logged out.
 
 
-## Revocation Details {#revocation-details}
+## Revocation Details
 
 Receiving a Universal Logout request is a clear communication that all of this user's existing sessions and tokens should be revoked as fast as possible.
 
