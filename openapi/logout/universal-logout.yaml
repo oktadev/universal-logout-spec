@@ -18,13 +18,13 @@ externalDocs:
   description: Find more info here
   url: https://developer.okta.com/docs/api/getting_started/design_principles.html
 servers:
-  - url: https://saas.com
+  - url: https://saas.example
 paths:
   /universal-logout:
     post:
-      summary: Logout a User
+      summary: Log out a User
       description: |-
-        Logout a user based on a [subject identifier](https://datatracker.ietf.org/doc/html/draft-ietf-secevent-subject-identifiers-18).
+        The Identity Provider makes a POST request to the application's logout endpoint to log out a user based on a [subject identifier](https://datatracker.ietf.org/doc/html/draft-ietf-secevent-subject-identifiers-18).
       operationId: logoutUser
       requestBody:
         content:
@@ -40,17 +40,17 @@ paths:
         required: true
       responses:
         '204':
-          description: "**Success**: Return this to confirm to the IdP that the user will be logged out."
+          description: "**Success**: User will be logged out."
         '400':
-          description: "**Bad Request**: Return this if the request was malformed, such as if the IdP sent an unrecognized type of subject identifier."
+          description: "**Bad Request**: Request was malformed, e.g. an unrecognized type of subject identifier."
         '401':
-          description: "**Unauthorized**: The request was missing authentication or the authentication was invalid."
+          description: "**Unauthorized**: Authentication was invalid."
         '403':
-          description: "**Forbidden**: The provided authorization is insufficient to perform the requested operation."
+          description: "**Forbidden**: Insufficient authorization, e.g. missing scopes."
         '404':
           description: "**User Not Found**: The user indicated by the subject identifier was not found."
         '422':
-          description: "**Unable to Process Request**: The request was valid, but the server is unable to log out the user indicated by the subject identifier."
+          description: "**Unable to Process Request**: Unable to log out the user."
       security:
         - oauth2:
             - universal-logout
@@ -62,7 +62,7 @@ components:
       type: object
       properties:
         universal_logout_endpoint:
-          description: Universal logout endpoint url
+          description: Universal logout endpoint URL
           type: string
         authorizationSchemes:
           description: Authorization credentials accepted at the universal logout endpoint
@@ -70,7 +70,7 @@ components:
           items:
             type: string
         issuers:
-          description: Issuers that can authorize universal logout credentials
+          description: Issuers that can authorize universal logout requests
           type: array
           items:
             type: string
@@ -192,24 +192,24 @@ components:
   examples:
     UniversalLogoutMetadataExample:
       value:
-        universal_logout_endpoint: https://saas.com/universal-logout
+        universal_logout_endpoint: https://saas.example/universal-logout
         authorizationSchemes:
           - Bearer
         issuers:
           - https://idp.example.com
         scope: universal-logout
     LogoutUserByEmail:
-      summary: Logout a user by their email address
+      summary: Log out a user by their email address
       value:
         subject:
           format: email
           email: user@example.com
     LogoutUserByOpaque:
-      summary: Logout a user by their user ID
+      summary: Log out a user by their user ID
       value:
         subject:
           format: opaque
-          phone_number: 'd563aec52'
+          id: 'd563aec52'
     LogoutUserByPhone:
       summary: Logout a user by their phone number
       value:
