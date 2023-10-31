@@ -40,17 +40,17 @@ paths:
         required: true
       responses:
         '204':
-          description: **Success**: Return this to confirm to the IdP that the user will be logged out.
+          description: "**Success**: Return this to confirm to the IdP that the user will be logged out."
         '400':
-          description: **Bad Request**: Return this if the request was malformed, such as if the IdP sent an unrecognized type of subject identifier.
+          description: "**Bad Request**: Return this if the request was malformed, such as if the IdP sent an unrecognized type of subject identifier."
         '401':
-          description: **Unauthorized**: The request was missing authentication or the authentication was invalid.
+          description: "**Unauthorized**: The request was missing authentication or the authentication was invalid."
         '403':
-          description: **Forbidden**: The provided authorization is insufficient to perform the requested operation.
+          description: "**Forbidden**: The provided authorization is insufficient to perform the requested operation."
         '404':
-          description: **User Not Found**: The user indicated by the subject identifier was not found.
+          description: "**User Not Found**: The user indicated by the subject identifier was not found."
         '422':
-          description: **Unable to Process Request**: The request was valid, but the server is unable to log out the user indicated by the subject identifier.
+          description: "**Unable to Process Request**: The request was valid, but the server is unable to log out the user indicated by the subject identifier."
       security:
         - oauth2:
             - universal-logout
