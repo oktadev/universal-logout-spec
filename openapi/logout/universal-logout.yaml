@@ -20,23 +20,6 @@ externalDocs:
 servers:
   - url: https://saas.com
 paths:
-  /.well-known/universal-logout:
-    get:
-      summary: Retrieve the Universal Logout configuration metadata
-      description: Returns the supported universal logout configuration for the host.
-      operationId: getUniversalLogoutConfiguration
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UniversalLogoutMetadata'
-              examples:
-                OpenID Connect Metadata:
-                  $ref: '#/components/examples/UniversalLogoutMetadataExample'
-      tags:
-        - UniversalLogout
   /universal-logout:
     post:
       summary: Logout a User
