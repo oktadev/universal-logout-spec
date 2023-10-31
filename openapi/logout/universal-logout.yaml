@@ -42,9 +42,11 @@ paths:
         '204':
           description: Success
         '403':
-          description: Access Denied
+          description: Access denied
         '404':
           description: User not found
+        '422':
+          description: Unable to process request
       security:
         - oauth2:
             - universal-logout
@@ -76,14 +78,8 @@ components:
       properties:
         subject:
           oneOf:
-            - $ref: '#/components/schemas/AccountSubject'
             - $ref: '#/components/schemas/EmailSubject'
-            - $ref: '#/components/schemas/IssuerSubSubject'
             - $ref: '#/components/schemas/OpaqueSubject'
-            - $ref: '#/components/schemas/PhoneSubject'
-            - $ref: '#/components/schemas/DidSubject'
-            - $ref: '#/components/schemas/UriSubject'
-            - $ref: '#/components/schemas/AliasSubject'
           discriminator:
             propertyName: format
     AccountSubject:
@@ -196,7 +192,7 @@ components:
         authorizationSchemes:
           - Bearer
         issuers:
-          - https:/idp.example.com
+          - https://idp.example.com
         scope: universal-logout
     LogoutUserByEmail:
       summary: Logout a user by their email address
