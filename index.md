@@ -14,6 +14,22 @@ The application will need to build a Universal Logout endpoint to handle the log
 
 If you're building an application that is used by enterprise customers, and would like to empower your customers to instantly mitigate risks across their ecosystem, read on for what you need to do to support Universal Logout with Okta.
 
+
+## Revocation Details
+
+Receiving a Universal Logout request is a clear communication that all of this user's existing sessions and tokens should be revoked as fast as possible.
+
+In many cases, it is not possible to instantaneously revoke all sessions and tokens, such as when using JWT access tokens, or when an application is deployed across multiple independent data centers. Because of this, a "Success" response to the logout request indicates that the application is doing everything within its power to log out all credentials possible.
+
+In particular, the application should revoke:
+
+* all OAuth refresh tokens for the user
+* all session cookies for the user
+
+The application is not expected to revoke access tokens, as it may not be technically possible. If your application does happen to be able to revoke access tokens then you should revoke them, but it is not required to be considered successfully logged out.
+
+
+
 ## Universal Logout Endpoint
 
 The actual endpoint URL is up to the discrection of the application.
@@ -81,19 +97,6 @@ If the logout request succeeded, your application returns HTTP `204`.
 
 * `204 No Content` - A `204` response indicates a successful request, and that the user will be logged out.
 
-
-## Revocation Details
-
-Receiving a Universal Logout request is a clear communication that all of this user's existing sessions and tokens should be revoked as fast as possible.
-
-In many cases, it is not possible to instantaneously revoke all sessions and tokens, such as when using JWT access tokens, or when an application is deployed across multiple independent data centers. Because of this, a "Success" response to the logout request indicates that the application is doing everything within its power to log out all credentials possible.
-
-In particular, the application should revoke:
-
-* all OAuth refresh tokens for the user
-* all session cookies for the user
-
-The application is not expected to revoke access tokens, as it may not be technically possible. If your application does happen to be able to revoke access tokens then you should revoke them, but it is not required to be considered successfully logged out.
 
 <!--
 ## Share the details of your logout endpoint
