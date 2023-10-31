@@ -36,7 +36,7 @@ paths:
                 $ref: '#/components/examples/LogoutUserByEmail'
               phone:
                 Email Logout:
-                $ref: '#/components/examples/LogoutUserByPhone'
+                $ref: '#/components/examples/LogoutUserByOpaque'
         required: true
       responses:
         '204':
@@ -200,6 +200,12 @@ components:
         subject:
           format: email
           email: user@example.com
+    LogoutUserByOpaque:
+      summary: Logout a user by their user ID
+      value:
+        subject:
+          format: opaque
+          phone_number: 'd563aec52'
     LogoutUserByPhone:
       summary: Logout a user by their phone number
       value:
