@@ -24,7 +24,7 @@ paths:
     post:
       summary: Logout a User
       description: |-
-        Logout a user based on a [subject identifier](https://datatracker.ietf.org/doc/html/draft-ietf-secevent-subject-identifiers-14).
+        Logout a user based on a [subject identifier](https://datatracker.ietf.org/doc/html/draft-ietf-secevent-subject-identifiers-18).
       operationId: logoutUser
       requestBody:
         content:
