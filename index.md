@@ -16,13 +16,13 @@ If you're building an application that is used by enterprise customers, and woul
 
 ## Universal Logout Endpoint
 
-The actual endpoint URL is up to the discrection of the application, it will just need to be registered .
+The actual endpoint URL is up to the discrection of the application.
 
 ### Endpoint Authentication
 
 The request to the Universal Logout endpoint requires authentication so that your application knows the request is coming from Okta. At launch, Okta likely is able to support your existing API authentication scheme, especially if it is one of the following:
 
-* API key sent in the `Authorization` header, e.g. `Authorization: Bearer X1234`
+* OAuth Bearer Token, e.g. `Authorization: Bearer X1234`
 * API key sent in a custom HTTP header
 
 ### Logout Request
