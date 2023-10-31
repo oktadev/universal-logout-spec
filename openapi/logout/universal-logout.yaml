@@ -51,9 +51,6 @@ paths:
           description: "**User Not Found**: The user indicated by the subject identifier was not found."
         '422':
           description: "**Unable to Process Request**: Unable to log out the user."
-      security:
-        - oauth2:
-            - universal-logout
       tags:
         - UniversalLogout
 components:
@@ -219,7 +216,7 @@ components:
   securitySchemes:
     oauth2:
       type: oauth2
-      description: 'Pass the access_token as the value of the Authorization header: `Authorization: Bearer {access_token}`'
+      description: 'Pass the access token in the Authorization header using the "Bearer" scheme: `Authorization: Bearer {access_token}`'
       flows:
         authorizationCode:
           x-usePkce:
@@ -228,7 +225,7 @@ components:
           authorizationUrl: /oauth2/v1/authorize
           tokenUrl: /oauth2/v1/token
           scopes:
-            universal-logout: Requests access logout invdividual users
+            universal-logout: Requests access logout individual users
 tags:
   - name: UniversalLogout
     x-displayName: Universal Logout

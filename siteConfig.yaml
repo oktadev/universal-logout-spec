@@ -32,7 +32,7 @@ nav:
   - search: true
 
 footer:
-  copyrightText: Copyright © 2022 Okta.
+  copyrightText: Copyright © 2023 Okta.
   columns:
     - group: CONTACT & LEGAL
       items:
