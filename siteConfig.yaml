@@ -1,8 +1,8 @@
 meta:
-  title: Okta API Reference
-  description: Okta Developer API Reference
+  title: Universal Logout
+  description: A guide for how to integrate your applications with Okta Universal Logout
   siteUrl: https://developer.okta.com
-  keywords: okta, api reference docs
+  keywords: okta, logout
   lang: en-US
 linkChecker:
   severity: warning
