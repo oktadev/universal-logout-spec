@@ -48,7 +48,7 @@ or by their user identifier within the application:
 {
   "subject": {
     "format": "opaque",
-    "email": "d563aec52"
+    "id": "d563aec52"
   }
 }
 ```
