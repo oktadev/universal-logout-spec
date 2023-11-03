@@ -107,3 +107,15 @@ To be included in Okta's launch of Universal Logout, we'll need the details of y
 * What type of API authentication your endpoint uses
 -->
 
+## FAQ
+
+### Is this an open standard?
+
+The API described by this document is intended to be an open standard, able to be implemented by anyone on both sides of the transaction.
+
+We are bringing this work to the appropriate standards bodies, and will update this page when there are any changes to the status.
+
+As is the nature of the standardization process, it is possible that the specifics of the request may end up different than what is in this document. We intentionally designed this API based on existing standards where possible, to reduce the likelihood of things needing to change as the standard progresses.
+
+That said, the majority of the effort of implementing this API is actually implementing the internal revocation logic. Most of the investment in building this feature would be able to be carried over regardless of the specific API format that triggers the logout request.
+
