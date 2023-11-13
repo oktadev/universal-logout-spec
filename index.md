@@ -4,50 +4,48 @@ title: Reference Overview
 
 # Universal Logout
 
-When an identity provider such as Okta detects identity threats or responds to employee termination events, it can prevent the user from logging in to applications in the future. However, this by itself doesn't affect a user's existing sessions or tokens within an application.
+When an Identity Provider (IdP) like Okta detects identity threats or responds to employee termination events, it can prevent the user from signing in to apps in the future by suspending, deactivating, or deleting the user at the IdP. However, this doesn't affect a user's existing sessions or tokens within an app.
 
-Universal Logout is a way for an identity provider (IdP) or a security incident management tool to indicate to an application that all of a user's existing sessions should be revoked and the user should be logged out of the app.
+Universal Logout enables an IdP, or a security incident management tool, to send a request to an app indicating that it should revoke the user's existing sessions and log the user out.
 
-The application will need to build a Universal Logout endpoint to handle the logout requests. The Universal Logout endpoint will receive a request to log out a particular user, and should attempt to revoke all sessions and tokens for the user, and return a result indicating success or failure.
+A Universal Logout endpoint must be built for the app to handle logout requests. This endpoint receives a request to log a user out and then attempts to revoke all sessions and tokens for the user. The endpoint then returns a result indicating success or failure.
 
 **[Read the full API Specification here](/openapi/logout/logout/tag/UniversalLogout/)**
 
-If you're building an application that is used by enterprise customers, and would like to empower your customers to instantly mitigate risks across their ecosystem, read on for what you need to do to support Universal Logout with Okta.
-
+If you're building an app that's used by enterprise customers, and would like to empower your customers to instantly mitigate risks across their ecosystem, read on for how you can support Universal Logout with Okta.
 
 ## Revocation Details
 
-Receiving a Universal Logout request is a clear communication that all of this user's existing sessions and tokens should be revoked as fast as possible.
+When the Universal Logout endpoint receives a request, it's a clear communication that the user's existing sessions and tokens should be revoked as fast as possible.
 
-In many cases, it is not possible to instantaneously revoke all sessions and tokens, such as when using JWT access tokens, or when an application is deployed across multiple independent data centers. Because of this, a "Success" response to the logout request indicates that the application is doing everything within its power to log out all credentials possible.
+Often, it's not possible to instantaneously revoke all sessions and tokens. When you use JWT access tokens or when you deploy an app across multiple independent data centers, instantaneous revocation doesn't occur. Because of this, a "Success" response to the logout request indicates that the app is attempting to log out all credentials.
 
 In particular, the application should revoke:
 
 * all OAuth refresh tokens for the user
 * all session cookies for the user
 
-The application is not expected to revoke access tokens, as it may not be technically possible. If your application does happen to be able to revoke access tokens then you should revoke them, but it is not required to be considered successfully logged out.
-
+The app isn't expected to revoke access tokens, as it may not be technically possible. If your app can revoke access tokens, then go ahead and do it. However, revoking access tokens isn't required to consider the logout flow successful.
 
 
 ## Universal Logout Endpoint
 
-The actual endpoint URL is up to the discrection of the application.
+The actual endpoint URL is up to the discretion of the app developer building the endpoint for the app.
 
 ### Endpoint Authentication
 
-The request to the Universal Logout endpoint requires authentication so that your application knows the request is coming from Okta. At launch, Okta likely is able to support your existing API authentication scheme, especially if it is one of the following:
+The request to the Universal Logout endpoint requires authentication so that your app knows the request is coming from Okta. Okta should be able to support your existing API authentication scheme, especially if it's one of the following:
 
-* OAuth Bearer Token, e.g. `Authorization: Bearer X1234`
+* OAuth Bearer token, for example: `Authorization: Bearer X1234`
 * API key sent in a custom HTTP header
 
 ### Logout Request
 
-When a user should be logged out of the application, Okta will make a POST request to the Universal Logout endpoint. The request will include a JSON object that describes the user who should be logged out.
+When a user should be logged out of the app, Okta makes a POST request to the Universal Logout endpoint. The request includes a JSON object in the request body that describes the user to be logged out.
 
-By default, users will be identified by their email address. If the application supports provisioning with Okta, the users will be identified by ther user ID within the application. The user identifier is sent in the format defined by [Subject Identifiers for Security Event Tokens](https://datatracker.ietf.org/doc/html/draft-ietf-secevent-subject-identifiers-18), as either an `EmailSubject` or `Opaque` identifier. 
+By default, the user's email address identifies them. If an app supports provisioning with Okta, then the user identifier within the app identifies them. The user identifier is sent in the format defined by [Subject Identifiers for Security Event Tokens](https://datatracker.ietf.org/doc/html/draft-ietf-secevent-subject-identifiers-18) as either an `EmailSubject` or `Opaque` identifier.
 
-For example, a user is indicated by their email address:
+Email address:
 
 ```
 {
@@ -58,7 +56,7 @@ For example, a user is indicated by their email address:
 }
 ```
 
-or by their user identifier within the application:
+User identifier within the app:
 
 ```
 {
@@ -70,32 +68,42 @@ or by their user identifier within the application:
 ```
 
 
-### Logout Response
+### Logout response and response codes
 
-The response should indicate whether the logout request was successful, if the application is unable to log out the user, or if there is some other error. The response body is ignored by the caller, only the HTTP status code is used to indicate success or failure.
+The response should indicate whether the logout request was successful, if the app is unable to log the user out, or if there's some other error. Okta ignores the response body and uses only the HTTP status code to indicate success or failure.
 
-(See [Revocation Details](#revocation-details) below for more information on what needs to be revoked in order to be considered a success.)
+Note: See [Revocation Details](#revocation-details) for more information on what the app should revoke to consider the logout flow successful.
 
-Your application should first validate the request authentication, and return an error if the request is missing credentials or if the credentials are invalid. You can indicate this error with an HTTP `401` or `403` response code.
+#### 401 and 403
+
+Your app should first validate the request authentication, and then return an error if the request is missing credentials or if the credentials are invalid. Indicate this error with an HTTP `401` or `403` response code:
 
 * `401 Unauthorized` - The request was missing authentication or the authentication was invalid.
-* `403 Forbidden` - The provided authorization is insufficient to perform the requested operation, e.g. missing scope.
+* `403 Forbidden` - The provided authorization is insufficient to perform the requested operation, for example: missing scope.
 
-If the request was malformed, or includes a subject identifier of some other unrecognized type, your application can return HTTP `400`.
+#### 400
+
+If the request was malformed, or includes a subject identifier of an unrecognized type, your app can return HTTP `400`:
 
 * `400 Bad Request` - The request was malformed, contains invalid or unrecognized properties, or an unrecognized subject identifier type.
 
-Your application should look up the user identified by the subject identifier, and return `404` if the user was not found.
+#### 404
 
-* `404 Not Found` - The user indicated by the subject identifier was not found.
+Your app should look up the user identified by the subject identifier, and return `404` if the user isn't found:
 
-At this point, your application should attempt to log out the user. If there is some reason this is not possible, your application can return HTTP `422`.
+* `404 Not Found` - The user indicated by the subject identifier isn't found.
+
+#### 422
+
+At this point, your app should attempt to log the user out. If it's not possible, your app can return HTTP `422`:
 
 * `422 Unprocessable Content` - The application is unable to log out the user.
 
-If the logout request succeeded, your application returns HTTP `204`.
+#### 204
 
-* `204 No Content` - A `204` response indicates a successful request, and that the user will be logged out.
+If the logout request succeeds, your app returns HTTP `204`:
+
+* `204 No Content` - A `204` response indicates a successful request and that the user is logged out.
 
 
 <!--
@@ -111,11 +119,9 @@ To be included in Okta's launch of Universal Logout, we'll need the details of y
 
 ### Is this an open standard?
 
-The API described by this document is intended to be an open standard, able to be implemented by anyone on both sides of the transaction.
+The API described in this document is intended to be an open standard that anyone can implement on either side of the transaction.
 
-We are bringing this work to the appropriate standards bodies, and will update this page when there are any changes to the status.
+Okta is bringing this work to the appropriate standards bodies. As is the nature of the standardization process, it's possible that the specifics of the request may end up different than what's in this document. Okta intentionally designed this API based on existing standards to reduce the likelihood of things changing as the standard progresses.
 
-As is the nature of the standardization process, it is possible that the specifics of the request may end up different than what is in this document. We intentionally designed this API based on existing standards where possible, to reduce the likelihood of things needing to change as the standard progresses.
-
-That said, the majority of the effort of implementing this API is actually implementing the internal revocation logic. Most of the investment in building this feature would be able to be carried over regardless of the specific API format that triggers the logout request.
+A large part of the effort to implement this API is implementing the internal revocation logic. Most of the investment in building this feature can be carried over regardless of the specific API format that triggers the logout request.
 
