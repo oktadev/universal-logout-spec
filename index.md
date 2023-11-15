@@ -125,3 +125,11 @@ Okta is bringing this work to the appropriate standards bodies. As is the nature
 
 A large part of the effort to implement this API is implementing the internal revocation logic. Most of the investment in building this feature can be carried over regardless of the specific API format that triggers the logout request.
 
+### How is this different than IdP-initiated Single Logout?
+
+SAML IdP-Initiated Logout works by the IdP redirecting the user's browser to the SAML Service Provides (SPs), or by embedding the SPs in an iFrame, where it's ultimately the browser that delivers the logout signal to the SPs.
+
+Okta Universal Logout is a server-to-server protocol that works entirely outside the context of the user's browser. This ensures we are able to deliver a logout signal even if the user doesn't have an active browser window open to either Okta or the application.
+
+
+
